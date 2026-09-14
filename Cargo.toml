@@ -1,0 +1,60 @@
+[package]
+name = "slipql"
+description = "A query language for Slipcase metadata: select, from, where over a directory of containers"
+homepage = "https://slipcaseformat.org"
+version = "0.1.0"
+edition = "2021"
+authors = ["David M. Anderson"]
+license = "MIT"
+repository = "https://github.com/excelano/slipql"
+readme = "README.md"
+keywords = ["slipcase", "query", "metadata", "toml", "sql"]
+categories = ["command-line-utilities", "filesystem"]
+# The floor is slpc's, which is zip's; see slpc-rust's Cargo.toml. Nothing
+# written here needs more than edition 2021 implies.
+rust-version = "1.88"
+
+[features]
+default = ["cli"]
+# The command and its REPL. A program embedding the library takes
+# `default-features = false` and acquires neither clap nor rustyline.
+cli = ["dep:clap", "dep:rustyline"]
+
+[[bin]]
+name = "slipql"
+required-features = ["cli"]
+
+[dependencies]
+# Containers are read through the library and never re-parsed here; `toml_edit`
+# comes re-exported from it so the two cannot skew.
+slpc = "0.3"
+# Table rendering pads cells by display width, and a byte count misaligns every
+# column after the first non-ASCII cell.
+unicode-width = "0.2"
+clap = { version = "4.6", features = ["derive"], optional = true }
+rustyline = { version = "18.0", optional = true }
+
+[dev-dependencies]
+# Tests pack their own fixture containers rather than committing binaries.
+slpc = { version = "0.3", features = ["fs"] }
+tempfile = "3.27"
+
+[package.metadata.deb]
+maintainer = "David M. Anderson <david.anderson@excelano.com>"
+extended-description = """
+slipql runs select/from/where queries over the metadata of Slipcase containers
+in a directory tree. Each container is a row, each metadata key a column, and
+the result renders as a table, CSV, TSV, or JSON. It reads metadata in place
+without unpacking, keeps no index, and changes nothing."""
+section = "utils"
+priority = "optional"
+depends = "libc6, libgcc-s1"
+assets = [
+    ["target/release/slipql", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/slipql/README.md", "644"],
+    ["LICENSE", "usr/share/doc/slipql/copyright", "644"],
+]
+
+[profile.dist]
+inherits = "release"
+lto = "thin"
