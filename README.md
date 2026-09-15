@@ -57,20 +57,6 @@ cargo install slipql
 winget install Excelano.slipql
 ```
 
-Without winget, in PowerShell:
-
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://github.com/excelano/slipql/releases/latest/download/slipql-installer.ps1 | iex"
-```
-
-### Curl (any Linux or macOS)
-
-```sh
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/excelano/slipql/releases/latest/download/slipql-installer.sh | sh
-```
-
-Every release also carries plain archives for macOS and Linux on both Intel and ARM, and Windows on Intel, each with a `.sha256` beside it.
-
 ## The command
 
 `slipql <dir>` opens a prompt bound to a directory, so queries can leave out `from`. Add `--recursive` to descend into subdirectories. `--exec` runs one query and exits, and a query on standard input runs without a prompt, one per line, which is how a script uses it:
