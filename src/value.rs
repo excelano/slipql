@@ -5,7 +5,7 @@ use std::fmt;
 
 use slpc::toml_edit::{self, Datetime, Item, Offset};
 
-/// A value read from metadata or written in a query.
+/// A value read from a flyleaf or written in a query.
 ///
 /// The variants are TOML's. A datetime keeps TOML's own type, which carries
 /// all four calendar forms; [`Value::kind`] tells them apart.

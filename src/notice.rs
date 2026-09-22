@@ -48,7 +48,7 @@ impl Tally {
     }
 
     /// Comparisons that crossed type classes: the path, the kind found in the
-    /// metadata, the kind of the literal it was compared with, and how many
+    /// flyleaf, the kind of the literal it was compared with, and how many
     /// rows did it. Sorted by path.
     #[must_use]
     pub fn mismatches(&self) -> Vec<(&Path, Kind, Kind, usize)> {

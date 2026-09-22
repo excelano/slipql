@@ -15,7 +15,7 @@ use crate::value::Value;
 #[derive(Debug, Clone, Default)]
 #[non_exhaustive]
 pub struct Options {
-    /// How much of a metadata member to read before giving up on the file.
+    /// How much of a flyleaf member to read before giving up on the file.
     /// A container over the bound is skipped, not failed.
     pub limits: Limits,
 }
@@ -111,9 +111,9 @@ impl Iterator for Results {
         }
         loop {
             let candidate = self.walker.next(&mut self.tally)?;
-            let metadata = match File::open(&candidate.absolute)
+            let flyleaf = match File::open(&candidate.absolute)
                 .map_err(slpc::Error::from)
-                .and_then(|file| slpc::metadata_of_with(file, self.options.limits))
+                .and_then(|file| slpc::flyleaf_of_with(file, self.options.limits))
             {
                 Ok(doc) => Value::from_item(doc.as_item()).unwrap_or(Value::Table(Vec::new())),
                 Err(e) => {
@@ -123,7 +123,7 @@ impl Iterator for Results {
             };
             let path = candidate.relative.to_string_lossy().into_owned();
             let row = eval::Row {
-                metadata: &metadata,
+                flyleaf: &flyleaf,
                 path: &path,
             };
             if let Some(filter) = &self.query.filter {
@@ -132,7 +132,7 @@ impl Iterator for Results {
                 }
             }
             let cells = match &self.query.select {
-                Select::All => flatten(&metadata, &path),
+                Select::All => flatten(&flyleaf, &path),
                 Select::Columns(projections) => projections
                     .iter()
                     .map(|p| Cell {
@@ -147,17 +147,17 @@ impl Iterator for Results {
     }
 }
 
-/// Every leaf of the metadata as a dotted column, after `@path`.
+/// Every leaf of the flyleaf as a dotted column, after `@path`.
 ///
 /// Arrays are leaves: an array of tables is one cell, rendered inline, since
 /// unfolding it into rows is a different query shape.
-fn flatten(metadata: &Value, path: &str) -> Vec<Cell> {
+fn flatten(flyleaf: &Value, path: &str) -> Vec<Cell> {
     let mut cells = vec![Cell {
         column: Path::ContainerPath.to_string(),
         value: Some(Value::String(path.to_owned())),
     }];
     let mut route = Vec::new();
-    flatten_into(metadata, &mut route, &mut cells);
+    flatten_into(flyleaf, &mut route, &mut cells);
     cells
 }
 

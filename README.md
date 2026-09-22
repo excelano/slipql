@@ -1,6 +1,6 @@
 # slipql
 
-A query language for [Slipcase](https://slipcaseformat.org) metadata. Point it at a directory of `.slpc` containers and ask questions in `select`, `from`, and `where`: each container is a row, each metadata key a column.
+A query language for [Slipcase](https://slipcaseformat.org) flyleaves. Point it at a directory of `.slpc` containers and ask questions in `select`, `from`, and `where`: each container is a row, each flyleaf key a column.
 
 ```text
 $ slipql ./contracts --recursive
@@ -17,11 +17,11 @@ slipql> select @path, title, governance.owner where status = "draft" or tags con
 
 ## Why
 
-A Slipcase container carries a TOML document describing its payload, and that description travels with the file. Once a directory holds a few hundred of them, the question stops being "what is in this file" and becomes "which files say this". Unpacking every container to find out, or keeping an index that goes stale the moment someone copies a file in, both defeat the point of metadata that lives with the document.
+A Slipcase container carries a TOML document describing its content file, and that description travels with the file. Once a directory holds a few hundred of them, the question stops being "what is in this file" and becomes "which files say this". Unpacking every container to find out, or keeping an index that goes stale the moment someone copies a file in, both defeat the point of a flyleaf that lives with the file it describes.
 
-`slipql` reads each container's metadata in place, through the same library the `slipcase` command uses, and never unpacks a payload. It keeps no index and no state: every query is a fresh scan, so the answer is what is on disk now. It changes nothing.
+`slipql` reads each container's flyleaf in place, through the same library the `slipcase` command uses, and never unpacks a content file. It keeps no index and no state: every query is a fresh scan, so the answer is what is on disk now. It changes nothing.
 
-The language borrows SQL's clause shape and TOML's literals, so anyone who can write a metadata document can write a query against one without learning a second date syntax or a second way to quote a string.
+The language borrows SQL's clause shape and TOML's literals, so anyone who can write a flyleaf can write a query against one without learning a second date syntax or a second way to quote a string.
 
 ## Install
 
@@ -75,7 +75,7 @@ Output is a table at a terminal and tab-separated in a pipe; `--mode` picks `tab
 select <columns> from '<dir>' [recursive] [where <condition>] [limit <n>]
 ```
 
-Columns are metadata keys, with dots into nested tables and `[n]` into arrays: `governance.privacy_flag`, `tags[0]`. `@path` is the container's path under the `from` directory. `select *` gives `@path` and then every leaf value across the rows returned, as dotted columns. A column a row does not have renders empty rather than failing the query, because metadata keys are ad hoc by design.
+Columns are flyleaf keys, with dots into nested tables and `[n]` into arrays: `governance.privacy_flag`, `tags[0]`. `@path` is the container's path under the `from` directory. `select *` gives `@path` and then every leaf value across the rows returned, as dotted columns. A column a row does not have renders empty rather than failing the query, because flyleaf keys are ad hoc by design.
 
 Conditions compare a column with a literal using `=`, `!=`, `<`, `>`, `<=`, and `>=`, test membership with `in (...)`, match strings with `like` and `ilike`, look inside arrays with `contains`, and test for a key with `exists`. Combine with `and`, `or`, `not`, and parentheses. Literals are TOML's: `"strings"` or `'literal strings'`, `42`, `1.5`, `true`, and datetimes as TOML writes them, `2026-01-01` or `2026-01-01T09:00:00+02:00`.
 

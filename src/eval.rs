@@ -53,9 +53,9 @@ impl Truth {
     }
 }
 
-/// One row as the evaluator sees it: the metadata and the container's path.
+/// One row as the evaluator sees it: the flyleaf and the container's path.
 pub(crate) struct Row<'a> {
-    pub metadata: &'a Value,
+    pub flyleaf: &'a Value,
     pub path: &'a str,
 }
 
@@ -64,7 +64,7 @@ impl Row<'_> {
     pub(crate) fn lookup(&self, path: &Path) -> Option<Cow<'_, Value>> {
         match path {
             Path::ContainerPath => Some(Cow::Owned(Value::String(self.path.to_owned()))),
-            Path::Keys(segments) => resolve(self.metadata, segments).map(Cow::Borrowed),
+            Path::Keys(segments) => resolve(self.flyleaf, segments).map(Cow::Borrowed),
         }
     }
 }
@@ -199,7 +199,7 @@ mod tests {
     use crate::parse;
 
     const DOC: &str = r#"
-slipcase_version = "1.0"
+slipcase_version = "1.1"
 title = "Q3 report"
 priority = 3
 score = 2.5
@@ -207,7 +207,7 @@ final = true
 created = 2026-03-01T09:00:00+01:00
 due = 2026-04-01
 tags = ["draft", "finance"]
-[payload]
+[content]
 file = "report.pdf"
 [owner]
 name = "Kim"
@@ -220,9 +220,9 @@ name = "Kim"
 
     fn run(clause: &str) -> (Truth, Tally) {
         let q = parse(&format!("select * from '.' where {clause}")).unwrap();
-        let metadata = doc();
+        let flyleaf = doc();
         let row = Row {
-            metadata: &metadata,
+            flyleaf: &flyleaf,
             path: "a/report.pdf.slpc",
         };
         let mut tally = Tally::default();
@@ -244,7 +244,7 @@ name = "Kim"
         assert_eq!(truth("title < \"R\""), Truth::True);
         assert_eq!(truth("final = true"), Truth::True);
         assert_eq!(truth("owner.name = 'Kim'"), Truth::True);
-        assert_eq!(truth("payload.file like '%.pdf'"), Truth::True);
+        assert_eq!(truth("content.file like '%.pdf'"), Truth::True);
         assert_eq!(truth("@path like 'a/%'"), Truth::True);
     }
 

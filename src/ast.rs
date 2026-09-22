@@ -24,7 +24,7 @@ pub struct Query {
 /// The projection list.
 #[derive(Debug, Clone, PartialEq)]
 pub enum Select {
-    /// `*`: the container's path, then every leaf value in the metadata, as
+    /// `*`: the container's path, then every leaf value in the flyleaf, as
     /// dotted columns. The column set is the union over all rows returned.
     All,
     /// Named columns, in the order written.
@@ -62,7 +62,7 @@ pub struct Source {
 pub enum Path {
     /// `@path`: the container's path relative to the `from` root.
     ContainerPath,
-    /// A route into the metadata document: keys and array indexes.
+    /// A route into the flyleaf document: keys and array indexes.
     Keys(Vec<Segment>),
 }
 

@@ -50,11 +50,11 @@ impl Tree {
     }
 }
 
-fn pack(dir: &Path, payload: &str, metadata: &str) {
-    let doc = format!("slipcase_version = \"1.0\"\n{metadata}[payload]\nfile = \"{payload}\"\n");
+fn pack(dir: &Path, content: &str, flyleaf: &str) {
+    let doc = format!("slipcase_version = \"1.1\"\n{flyleaf}[content]\nfile = \"{content}\"\n");
     let doc: slpc::toml_edit::DocumentMut = doc.parse().unwrap();
-    let out = fs::File::create(dir.join(format!("{payload}.slpc"))).unwrap();
-    slpc::pack_reader(payload, &b"payload bytes"[..], doc, out).unwrap();
+    let out = fs::File::create(dir.join(format!("{content}.slpc"))).unwrap();
+    slpc::pack_reader(content, &b"content bytes"[..], doc, out).unwrap();
 }
 
 #[test]
@@ -158,7 +158,7 @@ fn star_flattens_leaves_and_unions_columns() {
     );
     assert_eq!(
         out,
-        "@path,slipcase_version,title,priority,history,payload.file\nsub/delta.md.slpc,1.0,Delta,2,\"[{ when = 2026-03-01 }, { when = 2026-03-02 }]\",delta.md\n"
+        "@path,slipcase_version,title,priority,history,content.file\nsub/delta.md.slpc,1.1,Delta,2,\"[{ when = 2026-03-01 }, { when = 2026-03-02 }]\",delta.md\n"
     );
     let out = tree.render(
         "select * from 'ROOT' where priority = 1 or priority = 3",
@@ -167,7 +167,7 @@ fn star_flattens_leaves_and_unions_columns() {
     let header = out.lines().next().unwrap();
     assert_eq!(
         header,
-        "@path,slipcase_version,title,priority,tags,created,owner.name,payload.file,owner.unit"
+        "@path,slipcase_version,title,priority,tags,created,owner.name,content.file,owner.unit"
     );
 }
 

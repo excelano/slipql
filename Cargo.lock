@@ -383,9 +383,9 @@ dependencies = [
 
 [[package]]
 name = "slpc"
-version = "0.3.11"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7aa87b211c46f5f8b41464d1faad68423ed8a5d27e67c4a005e87cf2d145d992"
+checksum = "3ba65df3ba4a1c5747c87d8a3e2d9ffe35cf152b2f735a6f3292bddc2eb9e599"
 dependencies = [
  "tempfile",
  "toml_edit",

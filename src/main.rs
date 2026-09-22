@@ -20,9 +20,9 @@ use slipql::{execute, parse_with, Error, Tally};
 #[command(
     name = "slipql",
     version,
-    about = "Query Slipcase metadata with select, from, and where",
-    long_about = "Runs select/from/where queries over the metadata of Slipcase containers in a \
-directory. Each container is a row and each metadata key a column.\n\n\
+    about = "Query the flyleaf of Slipcase containers with select, from, and where",
+    long_about = "Runs select/from/where queries over the flyleaf of Slipcase containers in a \
+directory. Each container is a row and each flyleaf key a column.\n\n\
 With a directory, queries may leave out `from`; a `from` in the query wins. \
 With --exec the query runs and the command exits. With standard input not a \
 terminal, each line is run as a query. Otherwise a prompt opens.\n\n\
@@ -282,7 +282,7 @@ Queries
   select * from '.' where tags contains \"draft\" and priority > 2
   select @path, title, owner.name where exists owner and created >= 2026-01-01
 
-Columns are metadata keys with dots into tables and [n] into arrays; @path is
+Columns are flyleaf keys with dots into tables and [n] into arrays; @path is
 the container's path under the from directory. Literals are written as TOML:
 \"strings\", 42, 1.5, true, 2026-01-01, 09:30:00. Conditions: = != < > <= >=,
 in (...), like and ilike with % and _, contains for arrays, exists for keys.

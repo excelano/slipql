@@ -32,11 +32,11 @@ segment := word | string
 word    := ( letter | digit | "_" | "-" )+
 ```
 
-A path is a route into the metadata document: keys joined by `.` into nested tables, `[n]` into arrays, zero-based. A quoted string in path position is a quoted key, as it is in TOML, so `"my key".sub` reaches a key with a space in it. A keyword can be a key when quoted, or when followed by `.` or `[`.
+A path is a route into the flyleaf: keys joined by `.` into nested tables, `[n]` into arrays, zero-based. A quoted string in path position is a quoted key, as it is in TOML, so `"my key".sub` reaches a key with a space in it. A keyword can be a key when quoted, or when followed by `.` or `[`.
 
 `@path` is the container's path relative to the `from` directory, with the platform's separators. It is the only built-in column. TOML keys never contain `@`, so it cannot collide with one.
 
-`select *` produces `@path` and then every leaf of the metadata as a dotted column, in document order. An array is a leaf, arrays of tables included; a cell holding one renders the array inline. The column set is the union across the rows returned, in the order first seen.
+`select *` produces `@path` and then every leaf of the flyleaf as a dotted column, in document order. An array is a leaf, arrays of tables included; a cell holding one renders the array inline. The column set is the union across the rows returned, in the order first seen.
 
 ## Literals
 
@@ -46,7 +46,7 @@ string   := '"' basic-string '"' | "'" literal-string "'"
 boolean  := "true" | "false"
 ```
 
-Literals are TOML's, spelled as a metadata document spells them. A basic string takes TOML's escapes (`\n`, `\t`, `\"`, `\\`, `\uXXXX`, `\UXXXXXXXX`); a literal string takes nothing, which suits Windows paths. Integers allow underscores and the `0x`, `0o`, and `0b` prefixes; floats allow a fraction, an exponent, `inf`, and `nan`. Datetimes are TOML's four forms: `2026-01-01T09:00:00Z`, `2026-01-01T09:00:00`, `2026-01-01`, and `09:00:00`, with `T` replaceable by a space and seconds optional. Multi-line strings and array literals are not accepted.
+Literals are TOML's, spelled as a flyleaf spells them. A basic string takes TOML's escapes (`\n`, `\t`, `\"`, `\\`, `\uXXXX`, `\UXXXXXXXX`); a literal string takes nothing, which suits Windows paths. Integers allow underscores and the `0x`, `0o`, and `0b` prefixes; floats allow a fraction, an exponent, `inf`, and `nan`. Datetimes are TOML's four forms: `2026-01-01T09:00:00Z`, `2026-01-01T09:00:00`, `2026-01-01`, and `09:00:00`, with `T` replaceable by a space and seconds optional. Multi-line strings and array literals are not accepted.
 
 ## Predicates
 
@@ -89,4 +89,4 @@ A `select` with named columns renders those columns in the order written, an abs
 
 ## Not in the language
 
-Writes of any kind. Aggregates, `group by`, `order by`, `distinct`, joins, subqueries. Unfolding an array of tables into rows, which is a different query shape from a predicate. Searching payload content, which is another engine's job. Each is an absence rather than a refusal; the parser names what it did not expect.
+Writes of any kind. Aggregates, `group by`, `order by`, `distinct`, joins, subqueries. Unfolding an array of tables into rows, which is a different query shape from a predicate. Searching what a content file holds, which is another engine's job. Each is an absence rather than a refusal; the parser names what it did not expect.
