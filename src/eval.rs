@@ -3,6 +3,9 @@
 //! Three-valued: a comparison against an absent key, or across type classes,
 //! is unknown rather than false, and a row is kept only when the whole clause
 //! is true. `exists` is the one test that is never unknown.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::borrow::Cow;
 use std::cmp::Ordering;

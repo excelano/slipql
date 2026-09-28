@@ -1,4 +1,7 @@
 //! Values as a query sees them: TOML's types, owned, and comparable.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::cmp::Ordering;
 use std::fmt;

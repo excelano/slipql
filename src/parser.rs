@@ -3,6 +3,9 @@
 //! Keywords are lowercase and case-sensitive. A word that would be a keyword
 //! in another case gets an error saying so, because that is the one mistake
 //! everyone arriving from SQL makes first.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::path::PathBuf;
 

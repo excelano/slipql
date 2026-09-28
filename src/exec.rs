@@ -1,4 +1,7 @@
 //! Running a query: scan, filter, project, one row at a time.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::fs::File;
 

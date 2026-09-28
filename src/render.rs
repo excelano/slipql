@@ -1,5 +1,8 @@
 //! Rows to text: a table for a terminal, CSV and TSV for a pipe, JSON for
 //! anything that wants the types kept.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::fmt::Write as _;
 use std::io::{self, Write};

@@ -3,6 +3,9 @@
 //! A skipped file and a comparison across types are not errors: the query
 //! still answers. They are things the person asking would want to know, so
 //! they are collected here and reported once the rows are out.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::collections::BTreeMap;
 use std::path::PathBuf;

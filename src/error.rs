@@ -1,4 +1,7 @@
 //! What can go wrong, and how it reads.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::fmt;
 use std::path::PathBuf;

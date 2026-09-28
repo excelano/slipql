@@ -3,6 +3,9 @@
 //! Entries are visited in name order, depth first, so two runs over the same
 //! tree yield the same rows in the same order. Only files whose extension is
 //! `slpc` are candidates. A symbolic link to a directory is not followed.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::fs;
 use std::io;

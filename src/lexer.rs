@@ -4,6 +4,9 @@
 //! underscores and radix prefixes, floats, `true`, `false`, and the four
 //! datetime forms written as TOML writes them. Keywords are ordinary
 //! identifiers here; the parser decides what a word means.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use slpc::toml_edit::Datetime;
 

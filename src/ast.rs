@@ -2,6 +2,9 @@
 //!
 //! Everything here is data. [`crate::parse`] builds it and [`crate::execute`]
 //! runs it; a program embedding the library can also build one directly.
+//
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
 
 use std::fmt;
 use std::path::PathBuf;
