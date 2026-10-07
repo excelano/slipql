@@ -2,7 +2,7 @@
 name = "slipql"
 description = "A query language for Slipcase flyleaves: select, from, where over a directory of containers"
 homepage = "https://slipcaseformat.org"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 authors = ["David M. Anderson"]
 license = "MIT"
