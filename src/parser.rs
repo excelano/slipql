@@ -31,6 +31,16 @@ pub fn parse_with(text: &str, default_source: Option<&Source>) -> Result<Query> 
     Ok(query)
 }
 
+/// Parse a condition on its own: the text of a `where` clause, with no
+/// `select` or `from` around it.
+pub fn parse_condition(text: &str) -> Result<Predicate> {
+    let tokens = tokenize(text)?;
+    let mut parser = Parser { tokens, pos: 0 };
+    let predicate = parser.predicate()?;
+    parser.expect_end()?;
+    Ok(predicate)
+}
+
 const KEYWORDS: &[&str] = &[
     "select",
     "from",

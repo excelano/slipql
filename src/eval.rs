@@ -15,10 +15,15 @@ use crate::notice::Tally;
 use crate::value::{Kind, Value};
 
 /// The result of a predicate under three-valued logic.
+/// What a condition says of one row.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum Truth {
+pub enum Truth {
+    /// The condition holds.
     True,
+    /// The condition does not hold.
     False,
+    /// The condition cannot be decided: a key is absent, or a comparison
+    /// crossed types.
     Unknown,
 }
 

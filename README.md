@@ -103,6 +103,20 @@ fn main() -> slipql::Result<()> {
 }
 ```
 
+A program that holds a flyleaf already, rather than a directory of them, asks whether a condition is true of that one document:
+
+```rust
+use slipql::{evaluate, parse_condition, Truth};
+
+fn held(flyleaf: &slipql::slpc::toml_edit::DocumentMut) -> slipql::Result<bool> {
+    let scope = parse_condition(r#"custodian.email in ("jdoe@example.com") and created >= 2023-01-01"#)?;
+    let (truth, _tally) = evaluate(&scope, flyleaf, "");
+    Ok(truth == Truth::True)
+}
+```
+
+The answer is true, false, or unknown, as the language defines them: an absent key or a comparison across types decides nothing, and the tally says which comparisons crossed.
+
 Rows come out of an iterator as the scan reaches them, so a query over a large tree starts answering at once, `limit` stops the scan early, and dropping the iterator cancels it. Once the rows are out, the tally says what was skipped and which comparisons crossed types. [docs.rs/slipql](https://docs.rs/slipql) is the library's own page.
 
 ## License

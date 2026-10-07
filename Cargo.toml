@@ -27,7 +27,7 @@ required-features = ["cli"]
 [dependencies]
 # Containers are read through the library and never re-parsed here; `toml_edit`
 # comes re-exported from it so the two cannot skew.
-slpc = "0.4"
+slpc = "0.5"
 # Table rendering pads cells by display width, and a byte count misaligns every
 # column after the first non-ASCII cell.
 unicode-width = "0.2"
@@ -36,7 +36,7 @@ rustyline = { version = "18.0", optional = true }
 
 [dev-dependencies]
 # Tests pack their own fixture containers rather than committing binaries.
-slpc = { version = "0.4", features = ["fs"] }
+slpc = { version = "0.5", features = ["fs"] }
 tempfile = "3.27"
 
 [package.metadata.deb]

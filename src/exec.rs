@@ -5,9 +5,10 @@
 
 use std::fs::File;
 
+use slpc::toml_edit::DocumentMut;
 use slpc::Limits;
 
-use crate::ast::{Path, Projection, Query, Segment, Select};
+use crate::ast::{Path, Predicate, Projection, Query, Segment, Select};
 use crate::error::{Error, Result};
 use crate::eval::{self, Truth};
 use crate::notice::Tally;
@@ -40,6 +41,20 @@ pub struct Cell {
     pub column: String,
     /// The value, or `None` when the row has no such key.
     pub value: Option<Value>,
+}
+
+/// Whether a condition holds for one flyleaf document, with `path` standing
+/// for `@path`. The tally records any comparison that crossed types.
+#[must_use]
+pub fn evaluate(predicate: &Predicate, flyleaf: &DocumentMut, path: &str) -> (Truth, Tally) {
+    let flyleaf = Value::from_item(flyleaf.as_item()).unwrap_or(Value::Table(Vec::new()));
+    let row = eval::Row {
+        flyleaf: &flyleaf,
+        path,
+    };
+    let mut tally = Tally::default();
+    let truth = eval::eval(predicate, &row, &mut tally);
+    (truth, tally)
 }
 
 /// Run a query with default options.

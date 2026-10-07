@@ -21,9 +21,10 @@ mod scan;
 mod value;
 
 pub use error::{Error, Result};
-pub use exec::{execute, execute_with, Cell, Options, Results, Row};
+pub use eval::Truth;
+pub use exec::{evaluate, execute, execute_with, Cell, Options, Results, Row};
 pub use notice::{Skipped, Tally};
-pub use parser::{parse, parse_with};
+pub use parser::{parse, parse_condition, parse_with};
 pub use value::{Kind, Value};
 
 /// The container library this crate reads through, re-exported.
