@@ -302,7 +302,7 @@ name = "Kim"
         assert_eq!(tally.mismatches()[0].2, Kind::Array);
         let (t, tally) = run("score = nan");
         assert_eq!(t, Truth::Unknown);
-        assert!(tally.mismatches().is_empty());
+        assert_eq!(tally.mismatches(), []);
     }
 
     #[test]

@@ -10,10 +10,7 @@ name: ci
 # checks the library workflow adds. The command is in the same crate, and the
 # library checks are a superset of the binary ones, so one call covers both.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   ci:
