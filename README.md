@@ -39,12 +39,6 @@ Then install it, so `apt upgrade` keeps it current:
 sudo apt install slipql
 ```
 
-### Homebrew
-
-```sh
-brew install excelano/tap/slipql
-```
-
 ### crates.io
 
 ```sh
