@@ -198,3 +198,28 @@ fn a_missing_root_is_an_error_up_front() {
         "{err}"
     );
 }
+
+#[test]
+fn a_version_1_0_container_is_skipped_as_out_of_scope() {
+    let tree = Tree::new();
+    fs::copy(
+        concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/fixtures/version-1-0.slpc"
+        ),
+        tree.dir.path().join("old.slpc"),
+    )
+    .unwrap();
+    let mut results = tree.query("select title from 'ROOT'");
+    assert_eq!(results.by_ref().count(), 3);
+    let tally = results.into_tally();
+    let old = tally
+        .skipped()
+        .iter()
+        .find(|s| s.path.to_str() == Some("old.slpc"))
+        .unwrap();
+    assert_eq!(
+        old.reason,
+        "slipcase_version \"1.0\" is not one this build implements (SPEC 3)"
+    );
+}
