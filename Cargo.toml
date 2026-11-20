@@ -38,6 +38,7 @@ rustyline = { version = "18.0", optional = true }
 # Tests pack their own fixture containers rather than committing binaries.
 slpc = { version = "0.7", features = ["fs"] }
 tempfile = "3.27"
+zip = { version = "9.1", default-features = false }
 
 [package.metadata.deb]
 maintainer = "David M. Anderson <david.anderson@excelano.com>"

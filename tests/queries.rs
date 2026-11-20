@@ -202,14 +202,7 @@ fn a_missing_root_is_an_error_up_front() {
 #[test]
 fn a_version_1_0_container_is_skipped_as_out_of_scope() {
     let tree = Tree::new();
-    fs::copy(
-        concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/tests/fixtures/version-1-0.slpc"
-        ),
-        tree.dir.path().join("old.slpc"),
-    )
-    .unwrap();
+    version_1_0(&tree.dir.path().join("old.slpc"));
     let mut results = tree.query("select title from 'ROOT'");
     assert_eq!(results.by_ref().count(), 3);
     let tally = results.into_tally();
@@ -222,4 +215,17 @@ fn a_version_1_0_container_is_skipped_as_out_of_scope() {
         old.reason,
         "slipcase_version \"1.0\" is not one this build implements (SPEC 3)"
     );
+}
+
+fn version_1_0(path: &Path) {
+    use std::io::Write;
+    let mut w = zip::ZipWriter::new(fs::File::create(path).unwrap());
+    let opts =
+        zip::write::SimpleFileOptions::default().compression_method(zip::CompressionMethod::Stored);
+    w.start_file("slipcase.metadata.toml", opts).unwrap();
+    w.write_all(b"slipcase_version = \"1.0\"\n\n[payload]\nfile = \"a.txt\"\n")
+        .unwrap();
+    w.start_file("a.txt", opts).unwrap();
+    w.write_all(b"x").unwrap();
+    w.finish().unwrap();
 }
